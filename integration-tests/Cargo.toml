@@ -46,6 +46,9 @@ version = "1.0.39"
 features = ["full"]
 #features = [ "full", "extra-traits" ]
 
+[build-dependencies]
+cfg_rust_features = { git = "https://github.com/DerickEddington/cfg_rust_features", version = "0.1.1-pre"}
+
 [[test]]
 name = "integration_tests"
 path = "tests/lib.rs"

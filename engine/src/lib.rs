@@ -124,7 +124,7 @@ pub enum Error {
     #[error(transparent)]
     #[diagnostic(transparent)]
     Conversion(conversion::ConvertError),
-    #[error("Using `unsafe_references_wrapped` requires the Rust nightly `arbitrary_self_types` feature")]
+    #[error("Using `unsafe_references_wrapped` requires the Rust `arbitrary_self_types` feature")]
     WrappedReferencesButNoArbitrarySelfTypes,
 }
 
@@ -410,7 +410,9 @@ impl IncludeCppEngine {
         if matches!(
             self.config.unsafe_policy,
             UnsafePolicy::ReferencesWrappedAllFunctionsSafe
-        ) && !rustversion::cfg!(nightly)
+        ) && !cfg!(any(rust_lang_feature = "arbitrary_self_types", // It's stable.
+                       rust_comp_feature = "unstable_features"))   // Nightly is being used.
+            // Or instead, maybe: cfg!(feature = "arbitrary_self_types")
         {
             return Err(Error::WrappedReferencesButNoArbitrarySelfTypes);
         }

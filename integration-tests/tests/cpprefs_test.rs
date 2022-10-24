@@ -14,7 +14,8 @@ use proc_macro2::TokenStream;
 use quote::quote;
 
 const fn arbitrary_self_types_supported() -> bool {
-    rustversion::cfg!(nightly)
+    cfg!(any(rust_lang_feature = "arbitrary_self_types", // It's stable.
+             rust_comp_feature = "unstable_features"))   // Nightly (or Dev) is being used.
 }
 
 /// A positive test, we expect to pass.
@@ -26,7 +27,7 @@ fn run_cpprefs_test(
     generate_pods: &[&str],
 ) {
     if !arbitrary_self_types_supported() {
-        // "unsafe_references_wrapped" requires arbitrary_self_types, which requires nightly.
+        // "unsafe_references_wrapped" requires arbitrary_self_types, which is unstable currently.
         return;
     }
     do_run_test(
@@ -39,7 +40,12 @@ fn run_cpprefs_test(
         None,
         "unsafe_references_wrapped",
         Some(quote! {
-            #![feature(arbitrary_self_types)]
+            #![cfg_attr(
+                // If the Rust feature is still unstable
+                not(rust_lang_feature = "arbitrary_self_types"),
+                // then it needs to be specially enabled.
+                feature(arbitrary_self_types)
+            )] // Else it is stable and #![feature(...)] is not needed.
         }),
     )
     .unwrap()

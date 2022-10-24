@@ -62,3 +62,6 @@ features = ["build", "nightly"]
 
 [dev-dependencies]
 cc = "1.0"
+
+[build-dependencies]
+cfg_rust_features = { git = "https://github.com/DerickEddington/cfg_rust_features", version = "0.1.1-pre"}

@@ -24,8 +24,14 @@
 // feature.
 
 // Necessary to be able to call methods on reference wrappers.
-// For that reason, this example only builds on nightly Rust.
-#![feature(arbitrary_self_types)]
+// The Rust feature can be used as either unstable or stable.
+#![cfg_attr(
+    // If the Rust feature is still unstable
+    not(rust_lang_feature = "arbitrary_self_types"),
+    // then it needs to be specially enabled.
+    feature(arbitrary_self_types)
+)]
+// Else if the Rust feature is stable, #![feature(...)] is not needed.
 
 use autocxx::prelude::*;
 

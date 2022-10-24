@@ -8,6 +8,19 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+// If our package feature "arbitrary_self_types" is enabled, we require the Rust feature
+// "arbitrary_self_types" and we can use the Rust feature as either unstable or stable.
+#![cfg_attr(
+    all(feature = "arbitrary_self_types",
+        // (Seems to only be used for the unit-tests, currently.)
+        test,
+        // If the Rust feature is still unstable
+        not(rust_lang_feature = "arbitrary_self_types")),
+    // then it needs to be specially enabled.
+    feature(arbitrary_self_types)
+)]
+// Else if the Rust feature is stable, #![feature(...)] is not needed.
+
 // The crazy macro_rules magic in this file is thanks to dtolnay@
 // and is a way of attaching rustdoc to each of the possible directives
 // within the include_cpp outer macro. None of the directives actually
@@ -266,9 +279,9 @@ macro_rules! concrete {
 /// `safety!(unsafe_references_wrapped)`
 /// This policy treats C++ references as scary and requires
 /// them to be wrapped in a `CppRef` type: see [`CppRef`].
-/// This only works on nightly Rust because it
-/// depends upon an unstable feature
-/// (`arbitrary_self_types`). However, it should
+/// This only works when the `arbitrary_self_types` feature of
+/// Rust is available (whether as unstable from nightly Rust,
+/// or as stable whenever that might happen). However, it should
 /// eliminate all undefined behavior related to Rust's
 /// stricter aliasing rules than C++.
 #[macro_export]

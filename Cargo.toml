@@ -24,11 +24,17 @@ exclude = [ ".github", "book", "tools" ]
 # where we are depending on such features.
 resolver = "2"
 
+[features]
+arbitrary_self_types = []
+
 [dependencies]
 autocxx-macro = { path="macro", version="0.22.4" }
 cxx = "1.0.78" # ... also needed because expansion of type_id refers to ::cxx
 aquamarine = "0.1" # docs
 moveit = { version = "0.5", features = [ "cxx" ] }
+
+[build-dependencies]
+cfg_rust_features = { git = "https://github.com/DerickEddington/cfg_rust_features", version = "0.1.1-pre"}
 
 [workspace]
 members = ["parser", "engine", "gen/cmd", "gen/build", "macro", "demo", "tools/reduce", "tools/mdbook-preprocessor", "integration-tests"]

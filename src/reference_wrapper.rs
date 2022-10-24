@@ -543,6 +543,7 @@ mod tests {
 
     #[test]
     fn cpp_pin() {
+        struct RustThing { _a: i32 }
         let a = RustThing { _a: 4 };
         let a = CppPin::new(a);
         let _ = a.as_cpp_ref();

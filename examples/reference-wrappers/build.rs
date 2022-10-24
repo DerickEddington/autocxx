@@ -7,6 +7,11 @@
 // except according to those terms.
 
 fn main() -> miette::Result<()> {
+
+    // Not using `cfg_rust_features::emit!` because that would also emit a "rerun-if-changed" but
+    // this build script uses that instruction below.
+    cfg_rust_features::CfgRustFeatures::emit(["arbitrary_self_types"]).unwrap();
+
     let path = std::path::PathBuf::from("src");
     let mut b = autocxx_build::Builder::new("src/main.rs", &[&path]).build()?;
     b.flag_if_supported("-std=c++14")
