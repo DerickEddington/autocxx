@@ -34,7 +34,7 @@ aquamarine = "0.1" # docs
 moveit = { version = "0.5", features = [ "cxx" ] }
 
 [build-dependencies]
-cfg_rust_features = { git = "https://github.com/DerickEddington/cfg_rust_features", version = "0.1.1-pre"}
+cfg_rust_features = "0.1.1"
 
 [workspace]
 members = ["parser", "engine", "gen/cmd", "gen/build", "macro", "demo", "tools/reduce", "tools/mdbook-preprocessor", "integration-tests"]
